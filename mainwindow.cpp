@@ -4,15 +4,24 @@
 #include <QDebug>
 #include <bits/stdc++.h>
 using namespace std;
+
+// global objects
 TrieNode* root = new TrieNode();
+QString lastWord;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
     generateTrie();
+
     connect(ui->input,&QTextEdit::textChanged, this,&MainWindow::display);
+
+    QList<QPushButton*> buttons = {ui->s1 , ui->s2 , ui->s3, ui->s4 ,ui->s4, ui->s5, ui->s6};
+    for(auto x:buttons)
+        connect(x,&QPushButton::clicked, this , &MainWindow::onPressingButton);
 }
 
 MainWindow::~MainWindow()
@@ -20,7 +29,30 @@ MainWindow::~MainWindow()
     delete root;
     delete ui;
 }
+void MainWindow::onPressingButton(){
+    qDebug() <<1 ;
+    QPushButton* clickedButton = qobject_cast<QPushButton*>(sender());
 
+    if(clickedButton){
+        qDebug() << 2;
+        QString inputText = ui->input->toPlainText();
+        int i = inputText.lastIndexOf(' ');
+        qDebug() << inputText  << i ;
+
+        if(!inputText.isEmpty() && !lastWord.isEmpty()){
+            QString before = inputText.left(i);
+            QString updated = before + " " + clickedButton->text() + " ";
+
+            ui->input->setPlainText(updated);
+
+            QTextCursor cursor = ui->input->textCursor();
+            cursor.movePosition(QTextCursor::End);
+            ui->input->setTextCursor(cursor);
+            ui->input->setFocus();
+            return;
+        }
+    }
+}
 void MainWindow::insertWord(TrieNode* root, string key){
     TrieNode* curr = root;
     for (char c : key) {
@@ -29,10 +61,8 @@ void MainWindow::insertWord(TrieNode* root, string key){
             TrieNode* newNode = new TrieNode();
             curr->child[c - 'a'] = newNode;
         }
-
         curr = curr->child[c - 'a'];
     }
-
     curr->wordEnd = true;
     return;
 }
@@ -61,21 +91,36 @@ void MainWindow::display()
 {
     QString text = ui->input->toPlainText();
     qDebug() << "Input text: " << text;
+
+    //qDebug() << 1 ;
+
     QStringList words = text.split(QRegularExpression("\\s+"), Qt::SkipEmptyParts);
-    QString lastWord;
-    if(!text.isEmpty() && text.at(text.length()-1)<'a' && text.at(text.length()-1)>'z' || text.at(text.length()-1)<'A' && text.at(text.length()-1)>'Z'){
-        qDebug() << "6";
-        ui->s1->clear();
-    }
-    else if (!words.isEmpty()) {
-        lastWord = words.last();
-        //ui->s1->setText(lastWord);
-        qDebug() << "Last word: " << lastWord;
+
+    qDebug() <<2 ;
+
+    if(!text.isEmpty()){
+        qDebug() << 3;
+        QChar lastChar = text.at(text.length()-1);
+        qDebug() << lastChar;
+        if(!((lastChar >= 'a' && lastChar <= 'z') || (lastChar >= 'A' && lastChar <= 'Z'))){
+            qDebug() << "6";
+            ui->s1->setText("");
+            return;
+        }
+        else{
+            qDebug() << 'a';
+            lastWord = words.last();
+            //ui->s1->setText(lastWord);
+            //qDebug() << "Last word: " << lastWord;
+        }
     }
     else{
-        ui->s1->clear();
+        qDebug() << 3 ;
+        ui->s1->setText("");
+        return;
     }
-
+    //qDebug() << 4;
+    //qDebug() << lastWord;
     if(!lastWord.isEmpty()){
         QString sug = lastWord;
         TrieNode* curr = root;
@@ -93,7 +138,7 @@ void MainWindow::display()
             qDebug() << "ind :" << index ;
             if(curr->child[index]==nullptr){
                 qDebug() << "ind :" << index ;
-                ui->s1->clear();
+                ui->s1->setText("");
                 return;
             }
             curr=curr->child[index];
@@ -114,5 +159,10 @@ void MainWindow::display()
         }
         qDebug() << "Suggested word: " << sug;
         ui->s1->setText(sug);
+        return;
+    }
+    else{
+        ui->s1->setText("");
+        return;
     }
 }

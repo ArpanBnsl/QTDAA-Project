@@ -21,6 +21,7 @@ private slots:
     void display();
     void generateTrie();
     void insertWord(TrieNode* root,std::string s);
+    void onPressingButton();
 
 private:
     Ui::MainWindow *ui;

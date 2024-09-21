@@ -11,8 +11,8 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMainWindow>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QTextEdit>
 #include <QtWidgets/QWidget>
 
@@ -23,7 +23,12 @@ class Ui_MainWindow
 public:
     QWidget *centralwidget;
     QTextEdit *input;
-    QLineEdit *s1;
+    QPushButton *s4;
+    QPushButton *s5;
+    QPushButton *s3;
+    QPushButton *s2;
+    QPushButton *s1;
+    QPushButton *s6;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -35,10 +40,24 @@ public:
         input = new QTextEdit(centralwidget);
         input->setObjectName("input");
         input->setGeometry(QRect(150, 380, 481, 181));
-        s1 = new QLineEdit(centralwidget);
+        s4 = new QPushButton(centralwidget);
+        s4->setObjectName("s4");
+        s4->setGeometry(QRect(170, 340, 131, 31));
+        s5 = new QPushButton(centralwidget);
+        s5->setObjectName("s5");
+        s5->setGeometry(QRect(320, 340, 121, 31));
+        s3 = new QPushButton(centralwidget);
+        s3->setObjectName("s3");
+        s3->setGeometry(QRect(470, 310, 121, 31));
+        s2 = new QPushButton(centralwidget);
+        s2->setObjectName("s2");
+        s2->setGeometry(QRect(320, 310, 121, 31));
+        s1 = new QPushButton(centralwidget);
         s1->setObjectName("s1");
-        s1->setGeometry(QRect(150, 340, 113, 28));
-        s1->setReadOnly(true);
+        s1->setGeometry(QRect(170, 310, 131, 31));
+        s6 = new QPushButton(centralwidget);
+        s6->setObjectName("s6");
+        s6->setGeometry(QRect(470, 340, 121, 31));
         MainWindow->setCentralWidget(centralwidget);
 
         retranslateUi(MainWindow);
@@ -49,6 +68,12 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
+        s4->setText(QCoreApplication::translate("MainWindow", "PushButton", nullptr));
+        s5->setText(QCoreApplication::translate("MainWindow", "PushButton", nullptr));
+        s3->setText(QCoreApplication::translate("MainWindow", "PushButton", nullptr));
+        s2->setText(QCoreApplication::translate("MainWindow", "PushButton", nullptr));
+        s1->setText(QCoreApplication::translate("MainWindow", "PushButton", nullptr));
+        s6->setText(QCoreApplication::translate("MainWindow", "PushButton", nullptr));
     } // retranslateUi
 
 };
